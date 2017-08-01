@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option java_package = "com.expedia.open.tracing";
+option java_multiple_files = true;
+
+
+// Span represents a unit of work performed by a service.
+message Span {
+
+    string traceId             = 1;        // unique trace id
+    string spanId              = 2;        // unique span id
+    string parentSpanId        = 3;        // optional, a span can have its parent spanId
+    string operationName       = 4;        // name of operation
+
+    int64 startTime            = 5;        // creation time of this span in milliseconds from epoch
+    int64 duration             = 6;        // span duration in milliseconds
+
+    repeated Log logs          = 7;        // arbitrary set of timestamp-aware key-value pairs
+    repeated Tag tags          = 8;        // arbitrary set of key-value pairs
+}
+
+
+// Log is a timestamped event with a set of tags.
+message Log {
+  int64 timestamp              = 1;
+  repeated Tag fields          = 2;
+}
+
+
+// Tag is a strongly typed key/value pair. We use 'oneof' protobuf attribute to represent the possible tagTypes
+message Tag {
+
+  // TagType denotes the type of a Tag's value.
+  enum TagType {
+    STRING = 0;
+    DOUBLE = 1;
+    BOOL   = 2;
+    LONG   = 3;
+    BINARY = 4;
+  }
+  string key                  = 1;          // name of the tag key
+  TagType type                = 2;          // type of tag, namely string, double, bool, long and binary
+  oneof myvalue {
+      string vStr             = 3;          // string value type
+      int64 vLong             = 4;          // long value type
+      double vDouble          = 5;          // double value type
+      bool vBool              = 6;          // bool value type
+      bytes vBytes            = 7;          // byte array value type
+  }
+}
+
+// Process(or Service) that emits spans
+message Process {
+  string serviceName          = 1;          // process/service name
+  repeated Tag tags           = 2;          // arbitrary set of key-value pairs associated with this process/service
+}
+
+
+// You can optionally use Batch to send a collection of spans. Spans may not necessarily belong to one traceId.
+message Batch {
+   Process process            = 1;          // process identifier
+   repeated Span spans        = 2;          // a collection of spans emitted from the process/service
+}
