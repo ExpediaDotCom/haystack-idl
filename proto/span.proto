@@ -34,6 +34,7 @@ message Span {
 
     repeated Log logs          = 7;        // arbitrary set of timestamp-aware key-value pairs
     repeated Tag tags          = 8;        // arbitrary set of key-value pairs
+    Process process            = 9;        // process information for instance serviceName
 }
 
 
@@ -75,6 +76,5 @@ message Process {
 
 // You can optionally use Batch to send a collection of spans. Spans may not necessarily belong to one traceId.
 message Batch {
-   Process process            = 1;          // process identifier
-   repeated Span spans        = 2;          // a collection of spans emitted from the process/service
+   repeated Span spans        = 1;          // a collection of spans emitted from the process/service
 }
