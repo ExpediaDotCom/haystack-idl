@@ -1,0 +1,55 @@
+/*
+ *
+ *  Copyright 2017 Expedia, Inc.
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ */
+syntax = "proto3";
+import "span.proto";
+import "field.proto";
+
+option java_package = "com.expedia.open.tracing.internal";
+option java_multiple_files = true;
+
+// collection of spans belonging to a single Trace
+message Trace {
+    string traceId              = 1;
+    repeated Span childSpans    = 2;
+}
+
+// request for fetching Trace for traceId
+message TraceRequest {
+    string traceId = 1;
+}
+
+// criteria for searching traces
+message TracesSearchRequest {
+    repeated Field fields   = 1; // fields to filter for
+    int64 startTime         = 2; // search window start time in milliseconds time from epoch
+    int64 endTime           = 3; // search window end time in milliseconds time from epoch
+    int64 minDuration       = 4; // minimum duration for trace/span
+    int64 maxDuration       = 5; // maximum duration for trace/span
+    int32 limit             = 6; // limit on number of results to return
+}
+
+// list of filtered traces
+message TracesSearchResult {
+    repeated Trace traces       = 1;
+}
+
+// service interface to search and get traces
+service TraceProvider {
+    rpc searchTraces (TracesSearchRequest) returns (TracesSearchResult);    // search for traces based on filter fields and other criterias
+    rpc getTrace (TraceRequest) returns (Trace);                            // fetch an individual trace using traceId
+}
