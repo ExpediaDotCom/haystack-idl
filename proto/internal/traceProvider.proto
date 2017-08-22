@@ -33,23 +33,33 @@ message TraceRequest {
     string traceId = 1;
 }
 
+// request for fetching span for givve traceId and spanId
+message SpanRequest {
+    string traceId = 1;
+    string spanId  = 2;
+}
+
 // criteria for searching traces
 message TracesSearchRequest {
-    repeated Field fields   = 1; // fields to filter for
-    int64 startTime         = 2; // search window start time in milliseconds time from epoch
-    int64 endTime           = 3; // search window end time in milliseconds time from epoch
-    int64 minDuration       = 4; // minimum duration for trace/span
-    int64 maxDuration       = 5; // maximum duration for trace/span
-    int32 limit             = 6; // limit on number of results to return
+    string serviceName      = 1; // service through which trace must go through
+    string operationName    = 2; // operation through which trace must go through. Do not provide if searching for all operation of a given service.
+    repeated Field fields   = 3; // fields to filter traces
+    int64 startTime         = 4; // search window start time in milliseconds time from epoch
+    int64 endTime           = 5; // search window end time in milliseconds time from epoch
+    int64 minDuration       = 6; // minimum duration for trace/span
+    int64 maxDuration       = 7; // maximum duration for trace/span
+    int32 limit             = 8; // limit on number of results to return
 }
 
 // list of filtered traces
 message TracesSearchResult {
-    repeated Trace traces       = 1;
+    repeated Trace traces   = 1;
 }
 
 // service interface to search and get traces
 service TraceProvider {
     rpc searchTraces (TracesSearchRequest) returns (TracesSearchResult);    // search for traces based on filter fields and other criterias
-    rpc getTrace (TraceRequest) returns (Trace);                            // fetch an individual trace using traceId
+    rpc getTrace (TraceRequest) returns (Trace);                            // fetch a trace using traceId
+    rpc getRawTrace (TraceRequest) returns (Trace);                         // fetch a trace in raw un-transformed format using traceId
+    rpc getRawSpan (SpanRequest) returns (Span);                            // fetch a span of a trace in raw un-transformed format using traceId and spanId
 }
