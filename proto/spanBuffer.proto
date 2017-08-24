@@ -18,12 +18,11 @@
 syntax = "proto3";
 import "span.proto";
 
-option java_package = "com.expedia.open.tracing.stitch";
+option java_package = "com.expedia.open.tracing.buffer";
 option java_multiple_files = true;
 
-// Stitched span represents a collection of unique traceId with one or more child spans. 
-// StitchedSpan may not necessarily includes all child spans
-message StitchedSpan {
+// This entity represents a collection of spans that belong to one traceId
+message SpanBuffer {
     string traceId            = 1;  // unique trace id
     repeated Span childSpans  = 2;  // list of child spans
 }
