@@ -19,7 +19,7 @@ syntax = "proto3";
 import "span.proto";
 import "field.proto";
 
-option java_package = "com.expedia.open.tracing.internal";
+option java_package = "com.expedia.open.tracing.api";
 option java_multiple_files = true;
 
 // collection of spans belonging to a single Trace
