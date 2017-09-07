@@ -1,12 +1,34 @@
 # haystack-idl
 Span and other data model definitions used by Haystack
 
-## Creating test data in kafka (for Mac)
-If homebrew is installed, and you've brought up your local environment with the mechanism provided by the 
-[haystack-deployment](https://github.com/ExpediaDotCom/haystack-deployment) package, then you can issue the 
-following from a command line prompt:
-1. ```brew install protobuf``` to put protoc in /usr/local/bin.
-2. ```brew install kafkacat``` to put kafkacat in /usr/local/bin.
-3. ```cat ../samples/span.decoded | protoc --encode=Span span.proto | kafkacat -P -b $(minikube ip):9092 -t test```
-to push the contents of the ```span.decoded``` file (in the /proto directory that is a **child** of the 
-directory in which this README.md is found) into the local Kafka.
+
+## Creating test data in kafka 
+
+fakespans is a simple go app which can generate random spans and push to kafka 
+
+
+## Using fakespans
+
+Run the following commands on your terminal to start using fake spans you should have golang installed on your box
+
+1. export $GOPATH=<location where you want your go binaries>
+2. export $GOBIN=$GOPATH/bin
+3. cd fakespans
+4. go install
+5. $GOPATH/bin/fakespans
+
+
+##fakespans options
+```
+./fake_metrics -h
+Usage of fakespans:
+  -interval int
+        period in seconds between spans (default 1)
+  -kafka-broker string
+        kafka TCP address for Span-Proto messages. e.g. localhost:9092 (default "192.168.99.100:9092")
+  -topic string
+        Kafka Topic (default "spans")
+  -total-duration int
+        total period worth of spans in seconds (default 120)
+  
+```
