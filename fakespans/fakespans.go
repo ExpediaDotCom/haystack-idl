@@ -13,7 +13,7 @@ import (
 
 var (
 	kafkaTopic = flag.String("topic", "spans", "Kafka Topic")
-	kafkaBroker = flag.String("kafka-broker", "192.168.99.100:9092", "kafka TCP address for Span-Proto messages. e.g. localhost:9092")
+	kafkaBroker = flag.String("kafka-broker", "localhost:9092", "kafka TCP address for Span-Proto messages. e.g. localhost:9092")
 	spanInterval = flag.Int("interval", 1, "period in seconds between spans")
 	traceCount = flag.Int("trace-count", 20, "total number of unique traces you want to generate")
 	spanCount = flag.Int("span-count", 120, "total number of unique spans you want to generate")
