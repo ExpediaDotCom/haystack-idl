@@ -36,14 +36,14 @@ func main() {
 		if err != nil {
 			log.Fatal(4, "failed to create kafka  producer for broker path ", *kafkaBroker, err)
 		}
-		produceSpansSync(client, *spanInterval, *spanCount, *traceCount)
+		produceSpansSync(&client, *spanInterval, *spanCount, *traceCount)
 	}
 }
 
-func produceSpansSync(client sarama.SyncProducer, interval, spanCount int, traceCount int) {
+func produceSpansSync(clientPointer *sarama.SyncProducer, interval, spanCount int, traceCount int) {
 
 	timestamp := time.Now().Unix() - int64(spanCount * interval)
-
+	client :=*clientPointer
 	payload := make([]*sarama.ProducerMessage, spanCount)
 	rootSpans := make([]*span.Span, traceCount)
 
