@@ -27,14 +27,14 @@ message Span {
     string traceId             = 1;        // unique trace id
     string spanId              = 2;        // unique span id
     string parentSpanId        = 3;        // optional, a span can have its parent spanId
-    string operationName       = 4;        // name of operation
+    string serviceName         = 4;        // name of service
+    string operationName       = 5;        // name of operation
 
-    int64 startTime            = 5;        // creation time of this span in milliseconds from epoch
-    int64 duration             = 6;        // span duration in milliseconds
+    int64 startTime            = 6;        // creation time of this span in milliseconds from epoch
+    int64 duration             = 7;        // span duration in milliseconds
 
-    repeated Log logs          = 7;        // arbitrary set of timestamp-aware key-value pairs
-    repeated Tag tags          = 8;        // arbitrary set of key-value pairs
-    Process process            = 9;        // process information for instance serviceName
+    repeated Log logs          = 8;        // arbitrary set of timestamp-aware key-value pairs
+    repeated Tag tags          = 9;        // arbitrary set of key-value pairs
 }
 
 
@@ -65,12 +65,6 @@ message Tag {
       bool vBool              = 6;          // bool value type
       bytes vBytes            = 7;          // byte array value type
   }
-}
-
-// Process(or Service) that emits spans
-message Process {
-  string serviceName          = 1;          // process/service name
-  repeated Tag tags           = 2;          // arbitrary set of key-value pairs associated with this process/service
 }
 
 
