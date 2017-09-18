@@ -17,7 +17,6 @@
  */
 syntax = "proto3";
 import "span.proto";
-import "field.proto";
 
 option java_package = "com.expedia.open.tracing.api";
 option java_multiple_files = true;
@@ -41,14 +40,10 @@ message SpanRequest {
 
 // criteria for searching traces
 message TracesSearchRequest {
-    string serviceName      = 1; // service through which trace must go through
-    string operationName    = 2; // operation through which trace must go through. Do not provide if searching for all operation of a given service.
-    repeated Field fields   = 3; // fields to filter traces
-    int64 startTime         = 4; // search window start time in milliseconds time from epoch
-    int64 endTime           = 5; // search window end time in milliseconds time from epoch
-    int64 minDuration       = 6; // minimum duration for trace/span
-    int64 maxDuration       = 7; // maximum duration for trace/span
-    int32 limit             = 8; // limit on number of results to return
+    repeated Field fields   = 1; // fields to filter traces
+    int64 startTime         = 2; // search window start time in milliseconds time from epoch
+    int64 endTime           = 3; // search window end time in milliseconds time from epoch
+    int32 limit             = 4; // limit on number of results to return
 }
 
 // list of filtered traces
@@ -56,10 +51,36 @@ message TracesSearchResult {
     repeated Trace traces   = 1;
 }
 
+// Field is a general abstraction on data associated with a span
+// It can represent any indexed span attribute such as tag, log, spanName, or operationName
+message Field {
+    string name     = 1;          // name of the field
+    string value    = 2;          // value of the field
+}
+
+// An empty message type for rq/rs
+message Empty {}
+
+// query for fetching values for given field
+message FieldValuesRequest {
+    string fieldName         = 1; // name of field to query for
+    repeated Field filters   = 2; // provided fields to be used for filtering
+}
+
+message FieldNames {
+    repeated string names = 1;
+}
+
+message FieldValues {
+    repeated string values = 1;
+}
+
 // service interface to search and get traces
-service TraceProvider {
+service TraceReader {
     rpc searchTraces (TracesSearchRequest) returns (TracesSearchResult);    // search for traces based on filter fields and other criterias
     rpc getTrace (TraceRequest) returns (Trace);                            // fetch a trace using traceId
     rpc getRawTrace (TraceRequest) returns (Trace);                         // fetch a trace in raw un-transformed format using traceId
     rpc getRawSpan (SpanRequest) returns (Span);                            // fetch a span of a trace in raw un-transformed format using traceId and spanId
+    rpc getFieldNames (Empty) returns (FieldNames);                         // get all searchable Fields available in haystack system
+    rpc getFieldValues (FieldValuesRequest) returns (FieldValues);          // get values for a given Field
 }
