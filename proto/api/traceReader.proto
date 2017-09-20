@@ -41,8 +41,8 @@ message SpanRequest {
 // criteria for searching traces
 message TracesSearchRequest {
     repeated Field fields   = 1; // fields to filter traces
-    int64 startTime         = 2; // search window start time in milliseconds time from epoch
-    int64 endTime           = 3; // search window end time in milliseconds time from epoch
+    int64 startTime         = 2; // search window start time in microseconds time from epoch
+    int64 endTime           = 3; // search window end time in microseconds time from epoch
     int32 limit             = 4; // limit on number of results to return
 }
 
