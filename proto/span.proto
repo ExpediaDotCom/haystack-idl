@@ -30,8 +30,8 @@ message Span {
     string serviceName         = 4;        // name of service
     string operationName       = 5;        // name of operation
 
-    int64 startTime            = 6;        // creation time of this span in milliseconds from epoch
-    int64 duration             = 7;        // span duration in milliseconds
+    int64 startTime            = 6;        // creation time of this span in microseconds since epoch
+    int64 duration             = 7;        // span duration in microseconds
 
     repeated Log logs          = 8;        // arbitrary set of timestamp-aware key-value pairs
     repeated Tag tags          = 9;        // arbitrary set of key-value pairs
@@ -40,7 +40,7 @@ message Span {
 
 // Log is a timestamped event with a set of tags.
 message Log {
-  int64 timestamp              = 1;
+  int64 timestamp              = 1;       // timestamp in microseconds since epoch
   repeated Tag fields          = 2;
 }
 
