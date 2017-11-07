@@ -26,9 +26,9 @@ message DispatchResult {
   string error_message     = 2;  // error message if result code is non zero
 
   enum ResultCode {
-    SUCCESS         = 0;
-    ERROR           = 1;
-    // THROTTLED       = 2; 
+    SUCCESS                = 0;
+    UNKNOWN_ERROR          = 1;
+    RATE_LIMIT_ERROR       = 2; 
   }
 } 
 
