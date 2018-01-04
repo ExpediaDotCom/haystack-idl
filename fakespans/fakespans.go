@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	kafkaTopic = flag.String("topic", "spans", "Kafka Topic")
-	kafkaBroker = flag.String("kafka-broker", "localhost:9092", "kafka TCP address for Span-Proto messages. e.g. localhost:9092")
+	kafkaTopic = flag.String("topic", "proto-spans", "Kafka Topic")
+	kafkaBroker = flag.String("kafka-broker", "192.168.99.100:9092", "kafka TCP address for Span-Proto messages")
 	spanInterval = flag.Int("interval", 1, "period in seconds between spans")
 	traceCount = flag.Int("trace-count", 20, "total number of unique traces you want to generate")
 	spanCount = flag.Int("span-count", 120, "total number of unique spans you want to generate")
@@ -36,11 +36,10 @@ func main() {
 		if err != nil {
 			log.Fatal(4, "failed to create kafka  producer for broker path ", *kafkaBroker, err)
 
-		}else {
+		} else {
 			produceSpansSync(&client, *spanInterval, *spanCount, *traceCount)
 			client.Close()
 		}
-
 
 	}
 }
@@ -80,10 +79,7 @@ func produceSpansSync(clientPointer *sarama.SyncProducer, interval, spanCount in
 }
 func generateSpan(epochTimeInSecs int64, traceid string, parentid string) span.Span {
 	operationName := "some-span"
-	host := "some-service"
-	process := &span.Process{
-		ServiceName: host,
-	}
+	serviceName := "some-service"
 	return span.Span{
 		TraceId: traceid,
 		SpanId: uuid.NewRandom().String(),
@@ -91,6 +87,6 @@ func generateSpan(epochTimeInSecs int64, traceid string, parentid string) span.S
 		OperationName: operationName,
 		StartTime: epochTimeInSecs * 1000,
 		Duration: int64(rand.Int31()),
-		Process: process,
+		ServiceName: serviceName,
 	}
 }
