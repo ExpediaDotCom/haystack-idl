@@ -71,10 +71,16 @@ func produceSpansSync(clientPointer *sarama.SyncProducer, interval, spanCount in
 			Key:   sarama.StringEncoder(testSpan.TraceId),
 			Topic: *kafkaTopic,
 			Value: sarama.ByteEncoder(data),
+			Timestamp:time.Unix(timestamp, 0),
 		}
 	}
 	log.Println("pushing spans to kafka")
-	client.SendMessages(payload)
+	err := client.SendMessages(payload)
+	if err != nil {
+		log.Fatal(4, "failed to produce data in kafka with error", err)
+	} else {
+		log.Println("successfully pushed spans to kafka")
+	}
 
 }
 func generateSpan(epochTimeInSecs int64, traceid string, parentid string) span.Span {
