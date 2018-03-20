@@ -10,7 +10,7 @@ Run the following commands on your terminal to start using fake spans you should
 2. export $GOBIN=$GOPATH/bin
 3. cd fakespans
 4. go install
-5. $GOPATH/bin/fakespans
+5. $GOBIN/fakespans
 
 
 ##fakespans options
@@ -36,4 +36,14 @@ Usage of fakespans:
         total number of unique traces you want to generate (default 20)
   -from-file File with Spans in JSON format. One span per line
   
+```
+
+Sample Usage:
+
+```
+$ $GOBIN/faksespans -from-file ./test-spans.json
+```
+
+```
+$ $GOBIN/faksespans -trace-count 20 --span-count 200
 ```
