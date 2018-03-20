@@ -9,7 +9,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/codeskyblue/go-uuid"
 	"math/rand"
-	"fmt"
+	//"fmt"
 )
 
 var (
@@ -42,21 +42,21 @@ func main() {
 			defer client.Close()
 
 			if len(*spanFile) > 0 {
-				produceSpansFromFile(&client, *spanFile, *spanInterval)
+				produceSpansFromFile(&client, *spanFile)
 			} else {
 				produceSpansSync(&client, *spanInterval, *spanCount, *traceCount)
 			}
 		}
 	}
 }
-func produceSpansFromFile(producer *sarama.SyncProducer, fileName string, interval int) {
+func produceSpansFromFile(producer *sarama.SyncProducer, fileName string) {
 	line := 0
 	ReadSpans(fileName, func(spanRecord SpanRecord) {
 		line = line + 1
-		fmt.Printf("%4v: %v\n", line, spanRecord)
+		//fmt.Printf("%4v: %v\n", line, spanRecord)
 
 		spanMessage := SpanFromSpanRecord(spanRecord)
-		fmt.Printf("\n%4v: Transformed record\n %v\n", line, spanMessage)
+		//fmt.Printf("\n%4v: Transformed record\n %v\n", line, spanMessage)
 		data, err := proto.Marshal(&spanMessage)
 		if err != nil {
 			log.Fatalf("Marshaling error [SpanId : %s] : %v\n", spanRecord.SpanId, err)
