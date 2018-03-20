@@ -1,4 +1,21 @@
-package main
+/*
+ *
+ *  Copyright 2017 Expedia, Inc.
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ */
+ package main
 
 import (
 	"flag"
@@ -9,11 +26,13 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/codeskyblue/go-uuid"
 	"math/rand"
+	//"fmt"
 )
 
 var (
 	kafkaTopic = flag.String("topic", "proto-spans", "Kafka Topic")
 	kafkaBroker = flag.String("kafka-broker", "192.168.99.100:9092", "kafka TCP address for Span-Proto messages")
+	spanFile = flag.String("from-file", "", "File with Spans in JSON format. One span per line")
 	spanInterval = flag.Int("interval", 1, "period in seconds between spans")
 	traceCount = flag.Int("trace-count", 20, "total number of unique traces you want to generate")
 	spanCount = flag.Int("span-count", 120, "total number of unique spans you want to generate")
@@ -35,13 +54,46 @@ func main() {
 		client, err := sarama.NewSyncProducer([]string{*kafkaBroker}, config)
 		if err != nil {
 			log.Fatal(4, "failed to create kafka  producer for broker path ", *kafkaBroker, err)
-
 		} else {
-			produceSpansSync(&client, *spanInterval, *spanCount, *traceCount)
-			client.Close()
-		}
+			//close the client after sending spans
+			defer client.Close()
 
+			if len(*spanFile) > 0 {
+				produceSpansFromFile(&client, *spanFile)
+			} else {
+				produceSpansSync(&client, *spanInterval, *spanCount, *traceCount)
+			}
+		}
 	}
+}
+func produceSpansFromFile(producer *sarama.SyncProducer, fileName string) {
+	line := 0
+	ReadSpans(fileName, func(spanRecord SpanRecord) {
+		line = line + 1
+		//fmt.Printf("%4v: %v\n", line, spanRecord)
+
+		spanMessage := SpanFromSpanRecord(spanRecord)
+		//fmt.Printf("\n%4v: Transformed record\n %v\n", line, spanMessage)
+		data, err := proto.Marshal(&spanMessage)
+		if err != nil {
+			log.Fatalf("Marshaling error [SpanId : %s] : %v\n", spanRecord.SpanId, err)
+		} else {
+			message := &sarama.ProducerMessage{
+				Key:   sarama.StringEncoder(spanRecord.TraceId),
+				Topic: *kafkaTopic,
+				Value: sarama.ByteEncoder(data),
+				Timestamp:time.Unix(atoi(spanRecord.StartTime, -1), 0),
+			}
+
+			_,_,err := (*producer).SendMessage(message)
+			if err != nil {
+				log.Fatalf( "Failed to produce data in kafka [SpanId: %s] with error %v\n",
+					spanRecord.SpanId, err)
+			} else {
+				log.Printf("Successfully pushed span [%s] to kafka", spanRecord.SpanId)
+			}
+		}
+	})
 }
 
 func produceSpansSync(clientPointer *sarama.SyncProducer, interval, spanCount int, traceCount int) {
