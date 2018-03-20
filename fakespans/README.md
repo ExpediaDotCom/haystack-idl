@@ -6,12 +6,14 @@ fakespans is a simple go app which can generate random spans and push to kafka
 
 Run the following commands on your terminal to start using fake spans you should have golang installed on your box
 
-1. export $GOPATH=`location where you want your go binaries`
-2. export $GOBIN=$GOPATH/bin
-3. cd fakespans
-4. go install
-5. $GOBIN/fakespans
-
+```
+$ export $GOPATH=`location where you want your go binaries`
+$ export $GOBIN=$GOPATH/bin
+$ cd fakespans
+$ go get
+$ go install
+$ $GOBIN/fakespans
+```
 
 ##fakespans options
 
