@@ -43,9 +43,9 @@ Usage of fakespans:
 Sample Usage:
 
 ```
-$ $GOBIN/faksespans --from-file ./test-spans.json
+$ $GOBIN/fakespans --from-file ./test-spans.json
 ```
 
 ```
-$ $GOBIN/faksespans --trace-count 20 --span-count 200
+$ $GOBIN/fakespans --trace-count 20 --span-count 200
 ```
