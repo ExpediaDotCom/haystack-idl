@@ -1,30 +1,27 @@
-## Creating test data in kafka 
 
-fakespans is a simple go app which can generate random spans and push to kafka 
+## Creating test data in Kafka 
+
+`fakespans` is a simple app written in the Go language which can generate random spans and push them to Kafka. 
 
 ## Using fakespans
 
-Run the following commands on your terminal to start using fake spans you should have golang installed on your box
+Run the following commands on your terminal to start using `fakespans`. You will need to have the Go language installed in order to run `fakespans`.
+
+ ```shell
+export $GOPATH=location where you want your go binaries (should end in /bin)
+export $GOBIN=$GOPATH
+go get github.com/Shopify/sarama
+go get github.com/codeskyblue/go-uuid
+go get github.com/golang/protobuf/proto
+cd fakespans
+go install
+$GOPATH/fakespans
+```
+
+## fakespans command line options
 
 ```
-$ export $GOPATH=`location where you want your go binaries`
-$ export $GOBIN=$GOPATH/bin
-$ cd fakespans
-$ go get
-$ go install
-$ $GOBIN/fakespans
-```
-
-##fakespans options
-
-`fakespans` utility can either generate random spans or upload spans from a file. If `from-file` option is specified it takes precedence over `trace-count` and `span-count` options. 
-
-File should contain spans serialized in JSON format with one span per line. A [sample JSON](./test-spans.json) file is provided for reference. 
-
-If `span-count and trace-count` options are used, the utility will generate `trace-count` number of traces with a total of `span-count` number of spans. 
- 
-```
-./fake_metrics -h
+./fakespans -h
 Usage of fakespans:
   -interval int
         period in seconds between spans (default 1)
@@ -36,16 +33,5 @@ Usage of fakespans:
         Kafka Topic (default "spans")
   -trace-count int
         total number of unique traces you want to generate (default 20)
-  -from-file File with Spans in JSON format. One span per line
-  
 ```
 
-Sample Usage:
-
-```
-$ $GOBIN/fakespans --from-file ./test-spans.json
-```
-
-```
-$ $GOBIN/fakespans --trace-count 20 --span-count 200
-```
