@@ -51,6 +51,25 @@ message TracesSearchResult {
     repeated Trace traces   = 1;
 }
 
+// request for fetching trace count of search result per interval
+message TraceCountsRequest {
+    repeated Field fields   = 1; // fields to filter traces
+    int64 startTime         = 2; // search window start time in microseconds time from epoch
+    int64 endTime           = 3; // search window end time in microseconds time from epoch
+    int64 interval          = 4; // interval in microseconds
+}
+
+// trace count list
+message TraceCounts {
+    repeated TraceCount traceCount = 1;
+}
+
+// count of traces for an interval
+message TraceCount {
+    int64 timestamp     = 1;     // end time of trace search result in microseconds time from epoch
+    int64 count         = 2;     // count of traces
+}
+
 // Field is a general abstraction on data associated with a span
 // It can represent any indexed span attribute such as tag, log, spanName, or operationName
 message Field {
@@ -96,6 +115,7 @@ message TraceCallGraph {
 // service interface to search and get traces
 service TraceReader {
     rpc searchTraces (TracesSearchRequest) returns (TracesSearchResult);    // search for traces based on filter fields and other criterias
+    rpc getTraceCounts (TraceCountsRequest) returns (TraceCounts);          // fetch per interval count of traces search
     rpc getTrace (TraceRequest) returns (Trace);                            // fetch a trace using traceId
     rpc getRawTrace (TraceRequest) returns (Trace);                         // fetch a trace in raw un-transformed format using traceId
     rpc getRawSpan (SpanRequest) returns (Span);                            // fetch a span of a trace in raw un-transformed format using traceId and spanId
