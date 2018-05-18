@@ -8,8 +8,8 @@
 Run the following commands on your terminal to start using `fakespans`. You will need to have the Go language installed in order to run `fakespans`.
 
  ```shell
-export GOPATH=location where you want your go binaries (should end in /bin)
-export GOBIN=$GOPATH
+export GOPATH= location where you want your go binaries (should end in /bin)
+export GOBIN=  your GOPATH + `/bin`
 cd fakespans/
 go get
 go install
