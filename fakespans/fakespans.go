@@ -143,7 +143,7 @@ func generateSpan(epochTimeInSecs int64, traceid string, parentid string) span.S
 		SpanId: uuid.NewRandom().String(),
 		ParentSpanId: parentid,
 		OperationName: operationName,
-		StartTime: epochTimeInSecs * 1000,
+		StartTime: epochTimeInSecs * 1000 * 1000 ,
 		Duration: int64(rand.Int31()),
 		ServiceName: serviceName,
 	}
