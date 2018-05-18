@@ -8,14 +8,13 @@
 Run the following commands on your terminal to start using `fakespans`. You will need to have the Go language installed in order to run `fakespans`.
 
  ```shell
-export $GOPATH=location where you want your go binaries (should end in /bin)
-export $GOBIN=$GOPATH
-go get github.com/Shopify/sarama
-go get github.com/codeskyblue/go-uuid
-go get github.com/golang/protobuf/proto
-cd fakespans
+export GOPATH=location where you want your go binaries (should end in /bin)
+export GOBIN=$GOPATH
+cd fakespans/
+go get
 go install
-$GOPATH/fakespans
+cd $GOBIN
+./fakespans
 ```
 
 ## fakespans command line options
