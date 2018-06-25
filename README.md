@@ -7,4 +7,6 @@ A simple maven pom file is available in [java](./java) folder to compile Haystac
 ## Creating test data in kafka 
 Simple utility in Go to generate and send sample Spans to Kakfa is in [fakespans](./fakespans) folder
 
+## Building fakespans
+```docker run --rm -it -v "$PWD":/usr/src/app -w /usr/src/app golang:1.8 /usr/src/app/build.sh```
 
