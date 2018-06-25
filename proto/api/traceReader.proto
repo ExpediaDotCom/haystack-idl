@@ -38,12 +38,34 @@ message SpanRequest {
     string spanId  = 2;
 }
 
+// a single operand in the expression tree
+message Operand {
+    oneof operand {
+        Field field                 = 1; // leaf field value
+        ExpressionTree expression   = 2; // a nested expression tree
+    }
+}
+
+// nested n-ary expression tree for specifying expression to filter
+// represents a binary operator which will be performed on a list of operands
+message ExpressionTree {
+    enum Operator {
+        AND = 0;
+        OR = 1;
+    }
+
+    Operator operator            = 1; // operator to use the subtree results
+    repeated Operand operands    = 2; // list of operands
+    bool isSpanLevelExpression   = 3; // if this expression is a span level or trace level filter
+}
+
 // criteria for searching traces
 message TracesSearchRequest {
-    repeated Field fields   = 1; // fields to filter traces
-    int64 startTime         = 2; // search window start time in microseconds time from epoch
-    int64 endTime           = 3; // search window end time in microseconds time from epoch
-    int32 limit             = 4; // limit on number of results to return
+    repeated Field fields           = 1 [deprecated=true]; // fields to filter traces
+    int64 startTime                 = 2; // search window start time in microseconds time from epoch
+    int64 endTime                   = 3; // search window end time in microseconds time from epoch
+    int32 limit                     = 4; // limit on number of results to return
+    ExpressionTree filterExpression = 5; // expression tree for trace search filters
 }
 
 // list of filtered traces
