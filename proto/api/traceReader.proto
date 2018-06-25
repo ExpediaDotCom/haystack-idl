@@ -38,18 +38,6 @@ message SpanRequest {
     string spanId  = 2;
 }
 
-message Expression {
-    enum Operator {
-        AND = 0;
-        OR = 1;
-    }
-
-    bool isSpanLevelExpression   = 1; // if expression is a span level or trace level filter
-    Operator operator            = 2; // operator to use the subtree results
-    ExpressionTree first         = 3; // left expression subtree
-    ExpressionTree second        = 4; // right expression subtree
-}
-
 // a single operand in the expression tree
 message Operand {
     oneof operand {
