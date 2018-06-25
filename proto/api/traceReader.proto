@@ -50,13 +50,25 @@ message Expression {
     ExpressionTree second        = 4; // right expression subtree
 }
 
-// nested expression tree for specifying expression to filter
-// it can either be a nested tree or a leaf field
-message ExpressionTree {
-    oneof expression {
-        Field field             = 1; // leaf field value
-        Expression expression   = 2; // nested expression tree
+// a single operand in the expression tree
+message Operand {
+    oneof operand {
+        Field field                 = 1; // leaf field value
+        ExpressionTree expression   = 2; // a nested expression tree
     }
+}
+
+// nested n-ary expression tree for specifying expression to filter
+// represents a binary operator which will be performed on a list of operands
+message ExpressionTree {
+    enum Operator {
+        AND = 0;
+        OR = 1;
+    }
+
+    Operator operator            = 1; // operator to use the subtree results
+    repeated Operand operands    = 2; // list of operands
+    bool isSpanLevelExpression   = 3; // if this expression is a span level or trace level filter
 }
 
 // criteria for searching traces
