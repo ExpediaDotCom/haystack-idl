@@ -39,13 +39,13 @@ message SpanRequest {
 }
 
 message Expression {
-    enum Operation {
+    enum Operator {
         AND = 0;
         OR = 1;
     }
 
     bool isSpanLevelExpression   = 1; // if expression is a span level or trace level filter
-    Operation operation          = 2; // operation to perform on the subtree results
+    Operator operation           = 2; // operator to use the subtree results
     ExpressionTree first         = 3; // left expression subtree
     ExpressionTree second        = 4; // right expression subtree
 }
