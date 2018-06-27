@@ -75,10 +75,11 @@ message TracesSearchResult {
 
 // request for fetching trace count of search result per interval
 message TraceCountsRequest {
-    repeated Field fields   = 1; // fields to filter traces
-    int64 startTime         = 2; // search window start time in microseconds time from epoch
-    int64 endTime           = 3; // search window end time in microseconds time from epoch
-    int64 interval          = 4; // interval in microseconds
+    repeated Field fields           = 1 [deprecated=true]; // fields to filter traces
+    int64 startTime                 = 2; // search window start time in microseconds time from epoch
+    int64 endTime                   = 3; // search window end time in microseconds time from epoch
+    int64 interval                  = 4; // interval in microseconds
+    ExpressionTree filterExpression = 5; // expression tree for trace search filters
 }
 
 // trace count list
