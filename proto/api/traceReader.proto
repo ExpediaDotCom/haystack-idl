@@ -32,7 +32,17 @@ message TraceRequest {
     string traceId = 1;
 }
 
-// request for fetching span for givve traceId and spanId
+// request for raw traces representing list of traceIds
+message RawTracesRequest {
+    repeated string traceId = 1;
+}
+
+// list of filtered traces
+message RawTracesResult {
+    repeated Trace traces   = 1;
+}
+
+// request for fetching span for give traceId and spanId
 message SpanRequest {
     string traceId = 1;
     string spanId  = 2;
@@ -145,4 +155,5 @@ service TraceReader {
     rpc getFieldNames (Empty) returns (FieldNames);                         // get all searchable Fields available in haystack system
     rpc getFieldValues (FieldValuesRequest) returns (FieldValues);          // get values for a given Field
     rpc getTraceCallGraph (TraceRequest) returns (TraceCallGraph);          // get graph of service calls made in the given traceId
+    rpc getRawTraces (RawTracesRequest) returns (RawTracesResult);          // get raw traces for given list of traceIds
 }
