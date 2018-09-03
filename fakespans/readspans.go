@@ -23,7 +23,7 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"./proto"
+	span "./proto"
 )
 
 type Log struct {

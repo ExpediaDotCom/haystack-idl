@@ -19,7 +19,7 @@ syntax = "proto3";
 
 option java_package = "com.expedia.open.tracing";
 option java_multiple_files = true;
-
+option go_package = "haystack";
 
 // Span represents a unit of work performed by a service.
 message Span {
