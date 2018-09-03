@@ -20,6 +20,7 @@ import "span.proto";
 
 option java_package = "com.expedia.open.tracing.api";
 option java_multiple_files = true;
+option go_package = "haystack";
 
 // collection of spans belonging to a single Trace
 message Trace {

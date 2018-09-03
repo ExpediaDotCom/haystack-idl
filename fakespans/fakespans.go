@@ -22,7 +22,7 @@ import (
 	"github.com/Shopify/sarama"
 	"log"
 	"time"
-	"./proto"
+	span "./proto"
 	"github.com/golang/protobuf/proto"
 	"github.com/codeskyblue/go-uuid"
 	"math/rand"
