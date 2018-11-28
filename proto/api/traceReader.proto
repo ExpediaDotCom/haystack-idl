@@ -108,13 +108,20 @@ message TraceCount {
 // It can represent any indexed span attribute such as tag, log, spanName, or operationName
 message Field {
     enum Operator {                 // define the operator between name and its value
-      EQUAL = 0;
+      EQUAL        = 0;
       GREATER_THAN = 1;
-      LESS_THAN = 2;
+      LESS_THAN    = 2;
     }
+
+    enum ValueType {
+      STRING   = 0;                 // default value type
+      DURATION = 1;                 // values of duration type can be expressed as 2h, 2m, 2s, 2ms
+    }
+
     string name       = 1;          // name of the field
     string value      = 2;          // value of the field
-    Operator operator = 3;          // operation between name and value
+    Operator operator = 3;          // operation between name and value, default is EQUAL
+    ValueType vType    = 4;          // type of value, default is string.
 }
 
 // An empty message type for rq/rs
