@@ -107,13 +107,14 @@ message TraceCount {
 // Field is a general abstraction on data associated with a span
 // It can represent any indexed span attribute such as tag, log, spanName, or operationName
 message Field {
-    enum Operator {               // define the operator between name and its value
+    enum Operator {                 // define the operator between name and its value
       EQUAL = 0;
       GREATER_THAN = 1;
       LESS_THAN = 2;
     }
-    string name     = 1;          // name of the field
-    string value    = 2;          // value of the field
+    string name       = 1;          // name of the field
+    string value      = 2;          // value of the field
+    Operator operator = 3;          // operation between name and value
 }
 
 // An empty message type for rq/rs
