@@ -16,40 +16,53 @@
  *
  */
 syntax = "proto3";
-import "spanBuffer.proto";
 
 option java_package = "com.expedia.open.tracing.backend";
 option java_multiple_files = true;
 option go_package = "haystack";
 
 
-
-// query for writing SpanBuffers to persistent store
-message WriteSpansRequest {
-    repeated SpanBuffer spanBuffers = 1;
+message Field {
+    string name = 1; // name of the field
+    string value = 2; // value of the field
+}
+message Metadata {
+    repeated Field fields = 1;
 }
 
-// query for reading SpanBuffers from persistent store
+message TraceRecord {
+    string traceId = 1;
+    bytes spans = 2; // byte array value type
+    int64 timestamp = 4;
+    Metadata metadata = 3;
+}
+
+// query for writing trace records to persistent store
+message WriteSpansRequest {
+    repeated TraceRecord records = 1;
+}
+
+// query for reading trace records from persistent store
 message ReadSpansRequest {
     repeated string traceIds = 1; // trace id of the request
 }
 
 message ReadSpansResponse {
-    repeated SpanBuffer spanBuffers = 1; // collection of span buffers
+    repeated TraceRecord records = 1; // collection of span buffers
 }
 
-message DispatchResult {
-    ResultCode code          = 1;  // result code is 0 for sucessful dipatch only
-    string error_message     = 2;  // error message if result code is non zero
+message WriteSpansResponse {
+    ResultCode code = 1; // result code is 0 for sucessful dipatch only
+    string error_message = 2; // error message if result code is non zero
 
     enum ResultCode {
-        SUCCESS                = 0;
-        UNKNOWN_ERROR          = 1;
+        SUCCESS = 0;
+        UNKNOWN_ERROR = 1;
     }
 }
 
 // service interface to write and read traces
 service StorageBackend {
-    rpc writeSpans (WriteSpansRequest) returns (DispatchResult); // write buffered spans to backend
+    rpc writeSpans (WriteSpansRequest) returns (WriteSpansResponse); // write buffered spans to backend
     rpc readSpans (ReadSpansRequest) returns (ReadSpansResponse); // read buffered spans from backend
 }
