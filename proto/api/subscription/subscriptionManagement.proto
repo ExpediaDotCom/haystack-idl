@@ -72,6 +72,10 @@ message CreateSubscriptionRequest {
     SubscriptionRequest subscriptionRequest = 2;
 }
 
+message CreateSubscriptionResponse {
+    string subscriptionId       = 1;
+}
+
 message SubscriptionResponse {
     string subscriptionId           = 1;
     User user                       = 2;
@@ -99,10 +103,15 @@ message SearchSubscriptionRequest {
     map<string, string> labels  = 2;
 }
 
+message GetSubscriptionRequest {
+    string subscriptionId = 1;
+}
+
+
 service SubscriptionManagement {
-    rpc createSubscription(CreateSubscriptionRequest) returns (string)  // create a new subscription. Returns a subscription Id
-    rpc updateSubscription(UpdateSubscriptionRequest) returns (Empty)   // update a subscription. All updates would be idempotent.
-    rpc deleteSubscription(DeleteSubscriptionRequest) returns (Empty)   // delete a subscription.
-    rpc getSubscription(string) returns (SubscriptionResponse)          // Fetch a subscription given the id of the subscription.
-    rpc searchSubscription(SearchSubscriptionRequest) returns (SearchSubscriptionResponse) // search subscription given a set of labels.
+    rpc createSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse);  // create a new subscription. Returns a subscription Id
+    rpc updateSubscription(UpdateSubscriptionRequest) returns (Empty);   // update a subscription. All updates would be idempotent.
+    rpc deleteSubscription(DeleteSubscriptionRequest) returns (Empty);   // delete a subscription.
+    rpc getSubscription(GetSubscriptionRequest) returns (SubscriptionResponse);          // Fetch a subscription given the id of the subscription.
+    rpc searchSubscription(SearchSubscriptionRequest) returns (SearchSubscriptionResponse); // search subscription given a set of labels.
 }
