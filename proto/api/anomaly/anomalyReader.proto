@@ -48,5 +48,5 @@ message SearchAnomaliesResponse {
 
 
 service AnomalyReader {
-    rpc getAnomalies(SearchAnamoliesRequest) returns (SearchAnomaliesResponse)  // fetches the anomalies
+    rpc getAnomalies(SearchAnamoliesRequest) returns (SearchAnomaliesResponse);  // fetches the anomalies
 }

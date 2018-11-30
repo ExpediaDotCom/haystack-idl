@@ -100,9 +100,9 @@ message SearchSubscriptionRequest {
 }
 
 service SubscriptionManagement {
-    rpc createSubscription(CreateSubscriptionRequest) returns (string)  // create a new subscription. Returns a subscription Id
-    rpc updateSubscription(UpdateSubscriptionRequest) returns (Empty)   // update a subscription. All updates would be idempotent.
-    rpc deleteSubscription(DeleteSubscriptionRequest) returns (Empty)   // delete a subscription.
-    rpc getSubscription(string) returns (SubscriptionResponse)          // Fetch a subscription given the id of the subscription.
-    rpc searchSubscription(SearchSubscriptionRequest) returns (SearchSubscriptionResponse) // search subscription given a set of labels.
+    rpc createSubscription(CreateSubscriptionRequest) returns (string);  // create a new subscription. Returns a subscription Id
+    rpc updateSubscription(UpdateSubscriptionRequest) returns (Empty);   // update a subscription. All updates would be idempotent.
+    rpc deleteSubscription(DeleteSubscriptionRequest) returns (Empty);   // delete a subscription.
+    rpc getSubscription(string) returns (SubscriptionResponse);          // Fetch a subscription given the id of the subscription.
+    rpc searchSubscription(SearchSubscriptionRequest) returns (SearchSubscriptionResponse); // search subscription given a set of labels.
 }
