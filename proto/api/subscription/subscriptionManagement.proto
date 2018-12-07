@@ -99,7 +99,7 @@ message DeleteSubscriptionRequest {
 }
 
 message SearchSubscriptionRequest {
-    string subscriptionId       = 1;
+    User user                   = 1;
     map<string, string> labels  = 2;
 }
 
