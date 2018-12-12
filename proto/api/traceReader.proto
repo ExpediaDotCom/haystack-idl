@@ -49,6 +49,10 @@ message SpanRequest {
     string spanId  = 2;
 }
 
+message SpanResponse {
+    repeated Span spans    = 1; // list of spans with a given traceId and spanId
+}
+
 // a single operand in the expression tree
 message Operand {
     oneof operand {
@@ -165,7 +169,7 @@ service TraceReader {
     rpc getTraceCounts (TraceCountsRequest) returns (TraceCounts);          // fetch per interval count of traces search
     rpc getTrace (TraceRequest) returns (Trace);                            // fetch a trace using traceId
     rpc getRawTrace (TraceRequest) returns (Trace);                         // fetch a trace in raw un-transformed format using traceId
-    rpc getRawSpan (SpanRequest) returns (Span);                            // fetch a span of a trace in raw un-transformed format using traceId and spanId
+    rpc getRawSpan (SpanRequest) returns (SpanResponse);                    // fetch a span of a trace in raw un-transformed format using traceId and spanId
     rpc getFieldNames (Empty) returns (FieldNames);                         // get all searchable Fields available in haystack system
     rpc getFieldValues (FieldValuesRequest) returns (FieldValues);          // get values for a given Field
     rpc getTraceCallGraph (TraceRequest) returns (TraceCallGraph);          // get graph of service calls made in the given traceId
