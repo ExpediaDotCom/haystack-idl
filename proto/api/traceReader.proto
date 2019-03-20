@@ -131,8 +131,14 @@ message FieldValuesRequest {
     repeated Field filters   = 2; // provided fields to be used for filtering
 }
 
+// field name and boolean for if the field is enabled for range queries
+message FieldName {
+    string name = 1;
+    bool isRangeQuery = 2;
+}
+
 message FieldNames {
-    repeated string names = 1;
+    repeated FieldName fieldNames = 1;
 }
 
 message FieldValues {
@@ -142,9 +148,9 @@ message FieldValues {
 message CallNode {
     string serviceName = 1;
     string operationName = 2;
-    string infrastructureProvider = 3;  // infrastructure provider hosting the sevice
-    string infrastructureLocation = 4;  // infrastructure location hosting the sevice
-    string duration = 5;                // duration of the call percieved by the service
+    string infrastructureProvider = 3;  // infrastructure provider hosting the service
+    string infrastructureLocation = 4;  // infrastructure location hosting the service
+    string duration = 5;                // duration of the call perceived by the service
 }
 
 message Call {
@@ -159,7 +165,7 @@ message TraceCallGraph {
 
 // service interface to search and get traces
 service TraceReader {
-    rpc searchTraces (TracesSearchRequest) returns (TracesSearchResult);    // search for traces based on filter fields and other criterias
+    rpc searchTraces (TracesSearchRequest) returns (TracesSearchResult);    // search for traces based on filter fields and other criteria
     rpc getTraceCounts (TraceCountsRequest) returns (TraceCounts);          // fetch per interval count of traces search
     rpc getTrace (TraceRequest) returns (Trace);                            // fetch a trace using traceId
     rpc getRawTrace (TraceRequest) returns (Trace);                         // fetch a trace in raw un-transformed format using traceId
