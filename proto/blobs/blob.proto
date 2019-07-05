@@ -25,16 +25,6 @@ option java_multiple_files = true;
 message Blob {
 
     string key                                  = 1; // unique key
-    string serviceName                          = 2; // name of the client
-    string operationName                        = 3;
-    string operationID                          = 4; // unique ID
-    map<string, string> metadata                = 5;
-    bytes content                               = 6;
-    string contentType                          = 7;
-    BlobType blobType                           = 8;
-
-    enum BlobType {
-        REQUEST = 0;
-        RESPONSE = 1;
-    }
+    map<string, string> metadata                = 2;
+    bytes content                               = 3;
 }
