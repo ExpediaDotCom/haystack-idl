@@ -19,7 +19,7 @@ syntax = "proto3";
 
 option java_package = "com.expedia.www.blobs.model";
 option java_multiple_files = true;
-
+option go_package = "blob";
 
 // Blob represents the data thats needs to be saved for a specific service call.
 message Blob {

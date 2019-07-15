@@ -20,6 +20,7 @@ import "blob.proto";
 
 option java_package = "com.expedia.www.haystack.agent.blobs.api";
 option java_multiple_files = true;
+option go_package = "blob";
 
 message DispatchResult {
     ResultCode code          = 1;  // result code is 0 for sucessful dipatch only
@@ -44,6 +45,10 @@ message BlobReadResponse {
     }
 }
 
+message FormattedBlobReadResponse {
+    string data              = 1;
+}
+
 message BlobSearch {
     string key               = 1;
 }
@@ -52,4 +57,5 @@ message BlobSearch {
 service BlobAgent {
     rpc dispatch (Blob) returns (DispatchResult); // dispatch blob to haystack agent
     rpc read (BlobSearch) returns (BlobReadResponse);
+    rpc readBlobAsString(BlobSearch) returns (FormattedBlobReadResponse);
 }
