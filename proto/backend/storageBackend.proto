@@ -45,12 +45,12 @@ message WriteSpansRequest {
 // query for reading trace records from persistent store
 message ReadSpansRequest {
     repeated string traceIds = 1; // trace id of the request
-    int64 ttl = 2419200;
 }
 
 // query for updating trace records from persistent store
 message UpdateSpansRequest {
     repeated string traceIds = 1; // trace id of the request
+    int64 ttl = 2419200;
 }
 
 message ReadSpansResponse {
