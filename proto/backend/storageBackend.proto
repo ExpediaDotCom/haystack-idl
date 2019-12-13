@@ -45,6 +45,12 @@ message WriteSpansRequest {
 // query for reading trace records from persistent store
 message ReadSpansRequest {
     repeated string traceIds = 1; // trace id of the request
+    int64 ttl = 2419200;
+}
+
+// query for updating trace records from persistent store
+message UpdateSpansRequest {
+    repeated string traceIds = 1; // trace id of the request
 }
 
 message ReadSpansResponse {
@@ -61,8 +67,19 @@ message WriteSpansResponse {
     }
 }
 
+message UpdateSpansResponse {
+    ResultCode code = 1; // result code is 0 for sucessful dipatch only
+    string error_message = 2; // error message if result code is non zero
+
+    enum ResultCode {
+        SUCCESS = 0;
+        UNKNOWN_ERROR = 1;
+    }
+}
+
 // service interface to write and read traces
 service StorageBackend {
     rpc writeSpans (WriteSpansRequest) returns (WriteSpansResponse); // write buffered spans to backend
     rpc readSpans (ReadSpansRequest) returns (ReadSpansResponse); // read buffered spans from backend
+    rpc updateTTL (UpdateSpansRequest) returns (UpdateSpansResponse); // update ttl for buffered spans from backend
 }
