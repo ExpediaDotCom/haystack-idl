@@ -47,12 +47,28 @@ message ReadSpansRequest {
     repeated string traceIds = 1; // trace id of the request
 }
 
+// query for updating trace records from persistent store
+message UpdateSpansDurationRequest {
+    repeated string traceIds = 1; // trace id of the request
+    int64 duration = 2; // duration(seconds) till what trace id needs to be persisted
+}
+
 message ReadSpansResponse {
     repeated TraceRecord records = 1; // collection of span buffers
 }
 
 message WriteSpansResponse {
-    ResultCode code = 1; // result code is 0 for sucessful dipatch only
+    ResultCode code = 1; // result code is 0 for successful dispatch only
+    string error_message = 2; // error message if result code is non zero
+
+    enum ResultCode {
+        SUCCESS = 0;
+        UNKNOWN_ERROR = 1;
+    }
+}
+
+message UpdateSpansDurationResponse {
+    ResultCode code = 1; // result code is 0 for successful dispatch only
     string error_message = 2; // error message if result code is non zero
 
     enum ResultCode {
@@ -65,4 +81,5 @@ message WriteSpansResponse {
 service StorageBackend {
     rpc writeSpans (WriteSpansRequest) returns (WriteSpansResponse); // write buffered spans to backend
     rpc readSpans (ReadSpansRequest) returns (ReadSpansResponse); // read buffered spans from backend
+    rpc updateSpansDuration (UpdateSpansDurationRequest) returns (UpdateSpansDurationResponse); // update duration for buffered spans to backend
 }
