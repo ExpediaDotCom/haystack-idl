@@ -48,15 +48,9 @@ message ReadSpansRequest {
 }
 
 // query for updating trace records from persistent store
-<<<<<<< Updated upstream
-message UpdateSpansDurationRequest {
-    repeated string traceIds = 1; // trace id of the request
-    int64 duration = 2; // duration(seconds) till what trace id needs to be persisted
-=======
 message UpdateSpansRetentionRequest {
     repeated string traceIds = 1; // trace ids of the request
     int64 retention = 2; // duration(seconds) till what trace id needs to be persisted
->>>>>>> Stashed changes
 }
 
 message ReadSpansResponse {
