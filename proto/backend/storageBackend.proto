@@ -44,13 +44,7 @@ message WriteSpansRequest {
 
 // query for reading trace records from persistent store
 message ReadSpansRequest {
-    repeated string traceIds = 1; // trace ids of the request
-}
-
-// query for updating trace records from persistent store
-message TraceRetentionRequest {
-    repeated string traceIds = 1; // trace ids of the request
-    int64 retention = 2; // new retention(seconds) time for trace ids
+    repeated string traceIds = 1; // trace id of the request
 }
 
 message ReadSpansResponse {
@@ -58,17 +52,7 @@ message ReadSpansResponse {
 }
 
 message WriteSpansResponse {
-    ResultCode code = 1; // result code is 0 for successful dispatch only
-    string error_message = 2; // error message if result code is non zero
-
-    enum ResultCode {
-        SUCCESS = 0;
-        UNKNOWN_ERROR = 1;
-    }
-}
-
-message TraceRetentionResponse {
-    ResultCode code = 1; // result code is 0 for successful dispatch only
+    ResultCode code = 1; // result code is 0 for sucessful dipatch only
     string error_message = 2; // error message if result code is non zero
 
     enum ResultCode {
@@ -81,5 +65,4 @@ message TraceRetentionResponse {
 service StorageBackend {
     rpc writeSpans (WriteSpansRequest) returns (WriteSpansResponse); // write buffered spans to backend
     rpc readSpans (ReadSpansRequest) returns (ReadSpansResponse); // read buffered spans from backend
-    rpc updateTraceRetentionPeriod (TraceRetentionRequest) returns (TraceRetentionResponse); // update retention for buffered spans to backend
 }
